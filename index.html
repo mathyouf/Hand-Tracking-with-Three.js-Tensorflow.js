@@ -10,12 +10,22 @@
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css">
     
-    <!-- import the webpage's javascript file -->
+    <!-- Tensorflow.js Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
+    
+    <!-- Driver of inference and webcam permissions -->
     <script src="/script.js" defer></script>
+    
+    <!-- A-frame -->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    
   </head>  
   <body>
-    <video autoplay></video>
+<!--     <video autoplay></video> -->
+    <a-scene>
+      <a-sky material="color:#a2c8c8"></a-sky>
+      <a-plane rotation="-90 0 0" geometry="width:10; height:10"></a-plane>
+    </a-scene>
   </body>
 </html>
