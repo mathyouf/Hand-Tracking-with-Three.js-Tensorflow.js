@@ -6,6 +6,7 @@ Game Idea
 You can play as the hand in Super Smash Bros, smashing things beneath you.
 ### Expectation
 ![MrHand](https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2Fexp.jfif?v=1595905544121)
+![MrHand2](https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2Fimages.jfif?v=1595907795318)
 ### Reality
 ![MyHand](https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2Freal.jfif?v=1595905543911)
 
