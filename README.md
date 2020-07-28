@@ -9,6 +9,7 @@ You can play as the hand in Super Smash Bros, smashing things beneath you.
 ![MrHand2](https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2Fimages.jfif?v=1595907795318)
 ### Reality
 ![MyHand](https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2Freal.jfif?v=1595905543911)
+![MyHand2](https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2F1.JPG?v=1595908898708)
 
 
 Tools
@@ -26,6 +27,10 @@ https://github.com/tensorflow/tfjs-models
 ### ← A-frame
 
 https://aframe.io/docs/1.0.0/introduction/
+
+### <- Possible Useful
+
+https://www.textures-resource.com/fullview/1996/
 
 Made by [Matt Fisher](https://www.linkedin.com/in/mathyouf/)
 -------------------
