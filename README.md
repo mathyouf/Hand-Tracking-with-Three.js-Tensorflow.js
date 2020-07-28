@@ -1,37 +1,31 @@
-Welcome to Glitch
+Implementing Hand Controls for Browser Games
 =================
 
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
+Game Idea
+------------
+You can play as the hand in Super Smash Bros, smashing things beneath you.
+### Expectation
+![MrHand](https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2Fexp.jfif?v=1595905544121)
+### Reality
+![MyHand](https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2Freal.jfif?v=1595905543911)
 
-**Glitch** is the friendly community where you'll build the app of your dreams. Glitch lets you instantly create, remix, edit, and host an app, bot or site, and you can invite collaborators or helpers to simultaneously edit code with you.
 
-Find out more [about Glitch](https://glitch.com/about).
-
-
-Your Project
+Tools
 ------------
 
-### ← README.md
+### ← Tensorflow.js
 
-That's this file, where you can tell people what your cool website does and how you built it.
+https://blog.tensorflow.org/2020/03/face-and-hand-tracking-in-browser-with-mediapipe-and-tensorflowjs.html
 
-### ← index.html
+### ← TF Handpose Model
 
-Where you'll write the content of your website. 
+https://ai.googleblog.com/2019/08/on-device-real-time-hand-tracking-with.html
+https://github.com/tensorflow/tfjs-models
 
-### ← style.css
+### ← A-frame
 
-CSS files add styling rules to your content.
+https://aframe.io/docs/1.0.0/introduction/
 
-### ← script.js
-
-If you're feeling fancy you can add interactivity to your site with JavaScript.
-
-### ← assets
-
-Drag in `assets`, like images or music, to add them to your project
-
-Made by [Glitch](https://glitch.com/)
+Made by [Matt Fisher](https://www.linkedin.com/in/mathyouf/)
 -------------------
-
-\ ゜o゜)ノ
+🔬[🤖🏫]
