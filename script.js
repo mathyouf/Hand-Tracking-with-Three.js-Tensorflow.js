@@ -5,26 +5,25 @@
 console.log("hi");
 
 function getVideoPermissions(){
-  const video = document.querySelector('video')
+  video = document.querySelector('video')
   if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(function (stream) {
         video.srcObject = stream;
-        main(video)
+        main()
       })
       .catch(function (err0r) {
         console.log("Something went wrong!");
       });
   }
 }
-async function main(video) {
-  const scene  = document.querySelector('a-scene')
+async function main() {
   // Load the MediaPipe handpose model.
   const model = await handpose.load();
   // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain a
   // hand prediction from the MediaPipe graph.
   const predictions = await model.estimateHands(video);
-  renderFingers(predictions, scene)
+  renderFingers(predictions)
   // if (predictions.length > 0) {
     /*
     `predictions` is an array of objects describing each detected hand, for example:
@@ -64,7 +63,7 @@ async function main(video) {
 //  }
 }
 
-function renderFingers(predictions, scene){
+function renderFingers(predictions){
   for (let i = 0; i < predictions.length; i++) {
       const keypoints = predictions[i].landmarks;
 
@@ -77,6 +76,8 @@ function renderFingers(predictions, scene){
         spherePoint.setAttribute('position', {x: x/100, y:y/100, z:z/10})
       }
     }
+    main()
 }
-
+const scene  = document.querySelector('a-scene')
+let video = undefined
 getVideoPermissions()
