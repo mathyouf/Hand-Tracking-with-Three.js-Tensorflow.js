@@ -28,9 +28,11 @@ async function main() {
     const predictions = await model.estimateHands(video);
     const render = await renderFingers(predictions, scene, first, points)
     const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('waited')},2000)})
-    if(count===0){
+    console.log("first:", first, wait, count)
+    if(count===0 && wait==='waited'){
       first = false
       points = render
+      console.log("first:", first)
     }
     count++
   }
@@ -75,7 +77,7 @@ async function main() {
 }
 
 async function renderFingers(predictions, scene, first, points){
-  if(first){
+  if(first === true){
     let pointsNodes = []
     for (let i = 0; i < predictions.length; i++) {
         const keypoints = predictions[i].landmarks;
@@ -87,9 +89,10 @@ async function renderFingers(predictions, scene, first, points){
           spherePoint.setAttribute('radius', 0.2)
           scene.appendChild(spherePoint)
           spherePoint.setAttribute('position', {x: x/100, y:y/100, z:z/10})
-          pointsNodes.append(spherePoint)
+          pointsNodes.push(spherePoint)
         }
     }
+    alert('first render', predictions.length)
     return pointsNodes
   } else {
     points.forEach((point, i) => {
