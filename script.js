@@ -3,6 +3,7 @@ async function getVideoPermissions(){
   if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(function (stream) {
+        alert('hi')
         video.srcObject = stream;
         return video
       })
@@ -17,7 +18,9 @@ async function main() {
   const scene  = document.querySelector('a-scene');
   
   // Get video permissions to begin rendering what's seen in the user camera
-  await getVideoPermissions().then(alert)
+  const video = await getVideoPermissions()
+  
+  alert(video)
   
   
   // Load the MediaPipe handpose model.
