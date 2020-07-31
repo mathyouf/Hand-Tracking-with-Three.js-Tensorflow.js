@@ -1,4 +1,4 @@
-async function getVideoPermissions(){
+async function getVideoPermissions() {
   let video = document.querySelector('video')
   if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -8,7 +8,7 @@ async function getVideoPermissions(){
       })
       .catch(function (err0r) {
         console.log("Something went wrong!");
-      return err0r
+        return err0r
       });
   }
 }
@@ -17,10 +17,7 @@ async function main() {
   const scene  = document.querySelector('a-scene');
   
   // Get video permissions to begin rendering what's seen in the user camera
-  const video = await getVideoPermissions()
-  
-  alert(video)
-  
+  alert(getVideoPermissions())
   
   // Load the MediaPipe handpose model.
   // const model = await handpose.load();
@@ -81,7 +78,4 @@ function renderFingers(predictions){
       }
     }
 }
-async function f(){
-  getVideoPermissions().then()
-}
-f()
+main()
