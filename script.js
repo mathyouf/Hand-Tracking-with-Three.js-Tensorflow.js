@@ -1,14 +1,13 @@
 async function getVideoPermissions() {
   let video = document.querySelector('video')
   if (navigator.mediaDevices.getUserMedia) {
-    try{
-    let stream = await navigator.mediaDevices.getUserMedia({ video: true })
-    video.srcObject = stream;
-    return video
-    }   } catch(err) {
-    /* handle the error */
-  }
-
+    try {
+      let stream = await navigator.mediaDevices.getUserMedia({ video: true })
+      video.srcObject = stream;
+      return video
+    } catch(err) {
+      return err
+    }
   }
 }
 async function main() {
@@ -20,9 +19,13 @@ async function main() {
   
   // Load the MediaPipe handpose model.
   const model = await handpose.load();
-  // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain a
-  // hand prediction from the MediaPipe graph.
-  const predictions = await model.estimateHands(video);
+  
+  let count = 0
+  while(count<10){
+    //Obtain hand prediction from the MediaPipe graph.
+    const predictions = await model.estimateHands(video);
+
+  }
   // const render = await renderFingers(predictions)
   // if (predictions.length > 0) {
     /*
