@@ -18,7 +18,7 @@ async function main() {
   // Get video permissions to begin rendering what's seen in the user camera
   const video = await getVideoPermissions();
   
-  console.log(video)
+  alert('hi')
   // Load the MediaPipe handpose model.
   // const model = await handpose.load();
   // // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain a
