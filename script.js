@@ -1,15 +1,14 @@
 async function getVideoPermissions() {
   let video = document.querySelector('video')
   if (navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(function (stream) {
-        video.srcObject = stream;
-        return video
-      })
-      .catch(function (err0r) {
-        console.log("Something went wrong!");
-        return err0r
-      });
+    try{
+    let stream = await navigator.mediaDevices.getUserMedia({ video: true })
+    video.srcObject = stream;
+    return video
+    }   } catch(err) {
+    /* handle the error */
+  }
+
   }
 }
 async function main() {
@@ -17,13 +16,13 @@ async function main() {
   const scene  = document.querySelector('a-scene');
   
   // Get video permissions to begin rendering what's seen in the user camera
-  alert(getVideoPermissions())
+  const video = await getVideoPermissions()
   
   // Load the MediaPipe handpose model.
-  // const model = await handpose.load();
-  // // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain a
-  // // hand prediction from the MediaPipe graph.
-  // const predictions = await model.estimateHands(video);
+  const model = await handpose.load();
+  // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain a
+  // hand prediction from the MediaPipe graph.
+  const predictions = await model.estimateHands(video);
   // const render = await renderFingers(predictions)
   // if (predictions.length > 0) {
     /*
