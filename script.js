@@ -26,6 +26,7 @@ async function main() {
   while(count<10 | first===true){
     //Obtain hand prediction from the MediaPipe graph.
     const predictions = await model.estimateHands(video);
+    console.log(predictions)
     const render = await renderFingers(predictions, scene, first, points)
     const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('waited')},200)})
     if(first===true){
@@ -80,6 +81,7 @@ async function renderFingers(predictions, scene, first, points){
   if(first === true){
     let pointsNodes = []
     let handCenter = document.createElement('a-entity')
+    handCenter.classList.add('handCenter')
     for (let i = 0; i < predictions.length; i++) {
         const keypoints = predictions[i].landmarks;
         // Log hand keypoints.
@@ -88,10 +90,11 @@ async function renderFingers(predictions, scene, first, points){
           let spherePoint = document.createElement('a-sphere')
           spherePoint.classList.add(i+'fingerPoint')
           spherePoint.setAttribute('radius', 0.2)
-          scene.appendChild(spherePoint)
-          spherePoint.setAttribute('position', {x: x/100, y:y/100, z:z/10})
+          handCenter.appendChild(spherePoint)
+          spherePoint.setAttribute('position', {x: x/100, y:-y/100, z:z/500})
           pointsNodes.push(spherePoint)
         }
+      scene.appendChild(handCenter)
     }
     return pointsNodes
   } else {
