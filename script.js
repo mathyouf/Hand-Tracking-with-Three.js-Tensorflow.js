@@ -3,7 +3,6 @@ async function getVideoPermissions(){
   if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(function (stream) {
-        alert('hi')
         video.srcObject = stream;
         return video
       })
@@ -82,4 +81,7 @@ function renderFingers(predictions){
       }
     }
 }
-main()
+async function f(){
+  getVideoPermissions().then()
+}
+f()
