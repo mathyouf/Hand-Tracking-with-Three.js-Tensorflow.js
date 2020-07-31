@@ -23,7 +23,7 @@ async function main() {
   // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain a
   // hand prediction from the MediaPipe graph.
   const predictions = await model.estimateHands(video);
-  renderFingers(predictions)
+  const render = await renderFingers(predictions)
   // if (predictions.length > 0) {
     /*
     `predictions` is an array of objects describing each detected hand, for example:
@@ -76,7 +76,6 @@ function renderFingers(predictions){
         spherePoint.setAttribute('position', {x: x/100, y:y/100, z:z/10})
       }
     }
-    main()
 }
 const scene  = document.querySelector('a-scene')
 let video = undefined

@@ -17,6 +17,7 @@ Tools
 
 ### ← Tensorflow.js
 
+https://github.com/tensorflow/tfjs-models/tree/master/handpose
 https://blog.tensorflow.org/2020/03/face-and-hand-tracking-in-browser-with-mediapipe-and-tensorflowjs.html
 
 ### ← TF Handpose Model
