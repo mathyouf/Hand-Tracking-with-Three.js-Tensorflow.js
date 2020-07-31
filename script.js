@@ -21,11 +21,17 @@ async function main() {
   const model = await handpose.load();
   
   let count = 0
+  let first = true
+  let points = []
   while(count<40){
     //Obtain hand prediction from the MediaPipe graph.
     const predictions = await model.estimateHands(video);
-    const render = await renderFingers(predictions, scene)
+    const render = await renderFingers(predictions, scene, first, points)
     const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('waited')},2000)})
+    if(count===0){
+      first = false
+      points = render
+    }
     count++
   }
   // const render = await renderFingers(predictions)
@@ -68,25 +74,30 @@ async function main() {
 //  }
 }
 
-async function renderFingers(predictions, scene, first){
+async function renderFingers(predictions, scene, first, points){
   if(first){
-  for (let i = 0; i < predictions.length; i++) {
-      const keypoints = predictions[i].landmarks;
-      // Log hand keypoints.
-      for (let i = 0; i < keypoints.length; i++) {
-        const [x, y, z] = keypoints[i];
-        let spherePoint = document.createElement('a-sphere')
-        spherePoint.classList.add(i+'fingerPoint')
-        spherePoint.setAttribute('radius', 0.2)
-        scene.appendChild(spherePoint)
-        spherePoint.setAttribute('position', {x: x/100, y:y/100, z:z/10})
-      }
+    let pointsNodes = []
+    for (let i = 0; i < predictions.length; i++) {
+        const keypoints = predictions[i].landmarks;
+        // Log hand keypoints.
+        for (let i = 0; i < keypoints.length; i++) {
+          let [x, y, z] = keypoints[i];
+          let spherePoint = document.createElement('a-sphere')
+          spherePoint.classList.add(i+'fingerPoint')
+          spherePoint.setAttribute('radius', 0.2)
+          scene.appendChild(spherePoint)
+          spherePoint.setAttribute('position', {x: x/100, y:y/100, z:z/10})
+          pointsNodes.append(spherePoint)
+        }
     }
+    return pointsNodes
   } else {
-    for (let i = 0; i < keypoints.length; i++) {
-      
-    }
-  }
+    points.forEach((point, i) => {
+      let [x, y, z] = predictions[0].landmarks[i]
+      console.log(x,y,z)
+      point.setAttribute('position', {x: x/100, y:y/100, z:z/10})
+    })
     return true
+  }
 }
 main()
