@@ -8,6 +8,7 @@ async function getVideoPermissions(){
       })
       .catch(function (err0r) {
         console.log("Something went wrong!");
+      return err0r
       });
   }
 }
@@ -16,9 +17,9 @@ async function main() {
   const scene  = document.querySelector('a-scene');
   
   // Get video permissions to begin rendering what's seen in the user camera
-  const video = await getVideoPermissions();
+  await getVideoPermissions().then(alert)
   
-  alert('hi')
+  
   // Load the MediaPipe handpose model.
   // const model = await handpose.load();
   // // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain a
