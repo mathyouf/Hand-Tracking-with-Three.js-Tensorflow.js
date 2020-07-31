@@ -1,16 +1,10 @@
-/* If you're feeling fancy you can add interactivity 
-    to your site with Javascript */
-
-// prints "hi" in the browser's dev tools console
-console.log("hi");
-
 function getVideoPermissions(){
   video = document.querySelector('video')
   if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(function (stream) {
         video.srcObject = stream;
-        main()
+        return 
       })
       .catch(function (err0r) {
         console.log("Something went wrong!");
@@ -18,6 +12,12 @@ function getVideoPermissions(){
   }
 }
 async function main() {
+  // Query and store the A-frame scene selector for use during render calls
+  const scene  = document.querySelector('a-scene');
+  
+  // Get video permissions to begin rendering what's seen in the user camera
+  const video = await getVideoPermissions();
+  
   // Load the MediaPipe handpose model.
   const model = await handpose.load();
   // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain a
@@ -77,6 +77,4 @@ function renderFingers(predictions){
       }
     }
 }
-const scene  = document.querySelector('a-scene')
-let video = undefined
-getVideoPermissions()
+main()
