@@ -23,16 +23,16 @@ async function main() {
   let count = 0
   let first = true
   let points = []
-  while(count<4000){
+  while(count<10 | first===true){
     //Obtain hand prediction from the MediaPipe graph.
     const predictions = await model.estimateHands(video);
     const render = await renderFingers(predictions, scene, first, points)
     const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('waited')},200)})
     if(first===true){
-      if(render.length>0 &&){
-      first = false
-      points = render
-         }
+      if(render.length>0){
+        first = false
+        points = render
+      }
     }
     count++
   }
@@ -79,6 +79,7 @@ async function main() {
 async function renderFingers(predictions, scene, first, points){
   if(first === true){
     let pointsNodes = []
+    let handCenter = document.createElement('a-entity')
     for (let i = 0; i < predictions.length; i++) {
         const keypoints = predictions[i].landmarks;
         // Log hand keypoints.
