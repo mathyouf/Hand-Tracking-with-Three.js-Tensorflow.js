@@ -127,13 +127,17 @@ async function main() {
   
   // Load the MediaPipe handpose model.
   const model = await handpose.load();
+  
+  const predictions = await model.estimateHands(video);
+  
+  console.log(predictions)
 
-  let count = 0
-  while(count<10){
-    //Obtain hand prediction from the MediaPipe graph.
-    const predictions = await model.estimateHands(video);
-    renderFingers(predictions, points)
-  }
+//   let count = 0
+//   while(count<10){
+//     //Obtain hand prediction from the MediaPipe graph.
+//     const predictions = await model.estimateHands(video);
+//     renderFingers(predictions, points)
+//   }
 }
 
 async function makeHandPoints(){
