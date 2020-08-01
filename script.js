@@ -50,10 +50,9 @@ async function main() {
 
   let count = 0;
   let lastpredictions = startingHands.map((keypoint)=>{return convertTo3D(keypoint)});
-  console.log(lastpredictions)
 
   while (count < 90000) {
-    if(count%100===0 && count>100){
+    if(count%100===0 && count>99){
       alert(wristdistances)
     }
     const predictions = await model.estimateHands(video);
@@ -146,13 +145,11 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
           y: yj,
           z: zj
         });    
-        actual.push([xj,yj,zj])
+        actual.push([x,y,z])
       })
-      return actual;
+      return 
     }
     
-  } else {
-  return false;
   }
 }
 
@@ -161,7 +158,7 @@ async function validateHand(keypoints){
     if(i%4===1 && i>4){
       let wrist = await eucDist(convertTo3D(keypoints[i]), convertTo3D(keypoints[0]))
       wristdistances.push(wrist)
-      if(wrist<1.1 | wrist>1.4){
+      if(wrist<0.8 | wrist>1.6){
         return false
       }
     }
