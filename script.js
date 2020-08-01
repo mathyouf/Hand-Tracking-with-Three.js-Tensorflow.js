@@ -159,7 +159,7 @@ async function eucDist(lhs, rhs) {
   return Math.sqrt(summedSquared);
 }
 
-function lerp(a, b, perc=0.30){
+function lerp(a, b, perc=0.70){
   return -(a-b)*perc + a 
 }
 
