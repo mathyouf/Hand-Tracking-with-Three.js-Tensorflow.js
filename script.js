@@ -129,9 +129,14 @@ async function main() {
   const model = await handpose.load();
   
   let count = 0
+  let lastpredictions = startingHands
+  
   while(count<10){
     const predictions = await model.estimateHands(video);
-    const render = await renderFingers(predictions, points)
+    const render = await renderFingers(predictions, points, lastpredictions)
+    if(predictions.length>0 && render){
+      lastpredictions = predictions[predictions.length-1].landmarks
+    }
     const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('done')},10)})
   }
 }
@@ -168,14 +173,16 @@ async function makeHandPoints(){
   return handPointNodes
 }
 
-async function renderFingers(predictions, points){
+async function renderFingers(predictions, points, lastpredictions){
   if(predictions.length > 0){
     const keypoints = predictions[predictions.length-1].landmarks
     points.forEach((point, i) => {
       let [x, y, z] = predictions[predictions.length-1].landmarks[i]
+      let [xi, yi, zi] = lastpredictions[i]
       point.setAttribute('position', {x: -x/100, y:(500-y)/100, z:z/50})
     })
     return true
   }
+  return false
 }
 main()
