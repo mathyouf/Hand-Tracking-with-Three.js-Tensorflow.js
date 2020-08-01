@@ -28,7 +28,7 @@ async function main() {
     const predictions = await model.estimateHands(video);
     console.log(predictions)
     const render = await renderFingers(predictions, scene, first, points)
-    const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('waited')},200)})
+    // const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('waited')},200)})
     if(first===true){
       if(render.length>0){
         first = false
@@ -83,8 +83,8 @@ async function renderFingers(predictions, scene, first, points){
     let handCenter = document.createElement('a-entity')
     handCenter.classList.add('handCenter')
     handCenter.setAttribute('position', '3 0 0')
-    for (let i = 0; i < predictions.length; i++) {
-        const keypoints = predictions[i].landmarks;
+    // for (let i = 0; i < predictions.length; i++) {
+        const keypoints = predictions[predictions.length-1].landmarks;
         // Log hand keypoints.
         for (let i = 0; i < keypoints.length; i++) {
           let [x, y, z] = keypoints[i];
@@ -94,18 +94,20 @@ async function renderFingers(predictions, scene, first, points){
           handCenter.appendChild(spherePoint)
           spherePoint.setAttribute('position', {x: -x/100, y:(500-y)/100, z:z/50})
           pointsNodes.push(spherePoint)
-        }
+        // }
       scene.appendChild(handCenter)
     }
     return pointsNodes
   } else {
     if(predictions.length > 0){
-      points.forEach((point, i) => {
-        const keypoints = predictions[predictions.length-1].landmarks
-        let [x, y, z] = predictions[predictions.length-1].landmarks[i]
-        console.log(x,y,z)
-        point.setAttribute('position', {x: -x/100, y:(500-y)/100, z:z/50})
-      })
+      for (let i = 0; i < predictions.length; i++) {
+        points.forEach((point, j) => {
+          const keypoints = predictions[i].landmarks
+          let [x, y, z] = predictions[i].landmarks[j]
+          console.log(x,y,z)
+          point.setAttribute('position', {x: -x/100, y:(500-y)/100, z:z/50})
+        })
+      }
       return true
     }
   }
