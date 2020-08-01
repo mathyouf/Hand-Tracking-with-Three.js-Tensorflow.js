@@ -173,6 +173,7 @@ function renderFingers(predictions, points){
     points.forEach((point, i) => {
       const keypoints = predictions[predictions.length-1].landmarks
       let [x, y, z] = predictions[predictions.length-1].landmarks[i]
+      point.setAttribute('scale', '12 12 12')
       point.setAttribute('position', {x: x/100, y:y/100, z:z/10})
     })
     return true
