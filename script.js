@@ -113,12 +113,14 @@ async function makeHandPoints() {
 }
 
 async function renderFingers(predictions, points, lastpredictions, scale) {
+    
+  // Check if any hand was detected
   if (predictions.length > 0) {
-    const keypoints = predictions[predictions.length - 1].landmarks;
-    const change = await keypoints.reduce(async (acc,val,i) => {
-        acc += (await eucDist(val,lastpredictions[i]))
-    })
-    console.log('Last Predictions', lastpredictions, '\n Points:', keypoints, '\n Euclidean Distance', change)
+    
+    const keypoints = predictions[predictions.length - 1].landmarks
+    
+    // Check if eucDist between lastpredictions and 
+    
     if(change < 100){
       // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
       // Wanted to set scale so that difference between points due to closeness to the camera didn't matter, but it looks bad. To reimplement, uncomment above and add scale/newScale as a second parameter to convertTo3D() below
@@ -130,8 +132,9 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
           z: z
         });    
       });
+      return keypoints;
     }
-    return keypoints;
+    
   }
   return false;
 }
