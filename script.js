@@ -25,7 +25,7 @@ async function main() {
     //Obtain hand prediction from the MediaPipe graph.
     const predictions = await model.estimateHands(video);
     if(predictions.length>0){
-      const render = await renderFingers(predictions, points)
+      const render = await renderFingers(predictions[predictions.length-1], points)
     }
     // const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('waited')},200)})
     count++
@@ -52,9 +52,10 @@ async function makeHandPoints(){
 
 async function renderFingers(predictions, points){
   // for (let i = 0; i < predictions.length; i++) {
+  const keypoints = predictions.landmarks
+  console.log('keypoints', keypoints)
   points.forEach((point, j) => {
-    const keypoints = predictions[predictions.length-1].landmarks
-    let [x, y, z] = predictions[predictions.length-1].landmarks[j]
+    let [x, y, z] = keypoints[j]
     console.log(x,y,z)
     point.setAttribute('position', {x: -x/100, y:(500-y)/100, z:z/50})
   })
