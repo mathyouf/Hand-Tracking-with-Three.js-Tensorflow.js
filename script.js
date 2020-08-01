@@ -26,8 +26,9 @@ async function main() {
     const predictions = await model.estimateHands(video);
     if(predictions.length>0){
       const render = await renderFingers(predictions[predictions.length-1], points)
+    } else {
+      const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('waited')},500)})
     }
-    // const wait = await new Promise((resolve, reject)=>{setTimeout(()=>{resolve('waited')},200)})
     count++
   }
 }
@@ -53,7 +54,7 @@ async function makeHandPoints(){
 async function renderFingers(predictions, points){
   // for (let i = 0; i < predictions.length; i++) {
   const keypoints = predictions.landmarks
-  console.log('keypoints', keypoints)
+  console.log('keypoints', points)
   points.forEach((point, j) => {
     let [x, y, z] = keypoints[j]
     console.log(x,y,z)
