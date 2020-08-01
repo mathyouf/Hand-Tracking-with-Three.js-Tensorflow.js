@@ -114,28 +114,21 @@ async function renderFingers(predictions, points, lastpredictions) {
   if (predictions.length > 0) {
     const keypoints = predictions[predictions.length - 1].landmarks;
     points.forEach((point, i) => {
-      let [x, y, z] = predictions[predictions.length - 1].landmarks[i];
-      let [xi, yi, zi] = lastpredictions[i];
-      let lerp = 0.50;
-      let minDist = 100
-      let lerpx = (Math.abs(x-xi)>minDist ? (-x + lerp * (xi - x)) / 100 : -xi / 100)
-      let lerpy = (Math.abs(y-yi)>minDist ? (500 - (y + lerp * (yi - y))) / 100 : (500-yi) / 100)
-      let lerpz = (Math.abs(z-zi)>minDist ? (z + lerp * (zi - z)) / 50 : zi / 50)
+      let [x, y, z] = convertPixels_to3D(predictions[predictions.length - 1].landmarks[i],lastpredictions[i])
       point.setAttribute("position", {
-        x: lerpx,
-        y: lerpy,
-        z: lerpz
+        x: x,
+        y: y,
+        z: z
       });
-      lastpredictions[i][0] = lerpx
-      lastpredictions[i][1] = lerpy
-      lastpredictions[i][2] = lerpz
     });
-    return lastpredictions;
+    return keypoints;
   }
   return false;
 }
 
-async function convertPixels_to3D(predictions){
-  
+function convertPixels_to3D(keypoints, lastkeypoints){
+  console.log("Keypoints", keypoints, "Last Keypoints:", lastkeypoints)
+  let [x,y,z] = 
+  return keypoints
 }
 main();
