@@ -119,7 +119,9 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
     
     const keypoints = predictions[predictions.length - 1].landmarks
     
-    // Check if eucDist between lastpredictions and 
+    // Check if eucDist between lastpredictions and keypoints is sufficiently large
+    const change = await eucDist(keypoints[8], lastpredictions[8])
+    console.log(change)
     
     if(change < 100){
       // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
@@ -135,8 +137,9 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
       return keypoints;
     }
     
-  }
+  } else {
   return false;
+  }
 }
 
 function convertTo3D([x, y, z], scale=1){
@@ -145,15 +148,11 @@ function convertTo3D([x, y, z], scale=1){
 
 async function eucDist(lhs, rhs) {
   let vectors = []
-  lhs.forEach((lhs_vector, i)=>{
-    vectors.push(rhs[i] - lhs_vector)
-  })
-   return Math.sqrt
-   (
-      vectors.reduce((acc,val)=>{
-        acc += val*val
-      })
-   );
+  lhs.forEach((lhs_vector, i)=>{console.log(lhs_vector);vectors.push((rhs[i] - lhs_vector))})
+  console.log(vectors)
+  let summedSquared = vectors.reduce((acc,val)=>{acc + (val*val)},0)
+  console.log('SummedSquared',summedSquared)
+  return Math.sqrt(summedSquared);
 }
 
 main();
