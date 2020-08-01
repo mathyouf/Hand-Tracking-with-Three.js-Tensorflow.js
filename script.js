@@ -36,7 +36,7 @@ async function getVideoPermissions() {
 }
 async function main() {
   // Make hand points
-  const points = await makeHandPoints();
+  const [points, scale] = await makeHandPoints();
 
   // Get video permissions to begin rendering what's seen in the user camera
   const video = await getVideoPermissions();
@@ -47,9 +47,9 @@ async function main() {
   let count = 0;
   let lastpredictions = startingHands;
 
-  while (count < 10000) {
+  while (count < 100) {
     const predictions = await model.estimateHands(video);
-    const render = await renderFingers(predictions, points, lastpredictions);
+    const render = await renderFingers(predictions, points, lastpredictions, scale);
     if (predictions.length > 0 && render) {
       lastpredictions = render;
       count++
@@ -107,12 +107,13 @@ async function makeHandPoints() {
     handPointNodes.push(spherePoint);
   }
   scene.appendChild(handCenter);
-  return handPointNodes;
+  return [handPointNodes, eucDist(convertTo3D(startingHands[0]),convertTo3D(startingHands[1]))];
 }
 
-async function renderFingers(predictions, points, lastpredictions) {
+async function renderFingers(predictions, points, lastpredictions, scale) {
   if (predictions.length > 0) {
     const keypoints = predictions[predictions.length - 1].landmarks;
+    let scaleDiff = eucDist(keypoints[0], keypoints[1])
     points.forEach((point, i) => {
       let [x, y, z] = convertTo3D(predictions[predictions.length - 1].landmarks[i])
       point.setAttribute("position", {
@@ -129,4 +130,16 @@ async function renderFingers(predictions, points, lastpredictions) {
 function convertTo3D([x, y, z]){
   return [-x / 100, (500 - y) / 100, z / 50]
 }
+
+function eucDist(lhs, rhs) {
+   let deltaX = rhs[0] - lhs[0];
+   let deltaY = rhs[1] - lhs[1];
+   let deltaZ = rhs[2] - lhs[2];
+   return Math.sqrt
+   (
+      deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ
+   );
+}
+
 main();
+
