@@ -50,7 +50,7 @@ async function main() {
   let lastpredictions = startingHands.map((keypoint)=>{return convertTo3D(keypoint)});
   console.log(lastpredictions)
 
-  while (count < 0) {
+  while (count < 90000) {
     const predictions = await model.estimateHands(video);
     const render = await renderFingers(predictions, points, lastpredictions, scale);
     if (predictions.length > 0 && render) {
@@ -153,10 +153,14 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
 
 async function validateHand(keypoints){
   for(let i=0;i<keypoints.length;i++){
-    if(i%4===0 && i>4){
-      if(keypoints[i])
+    if(i%4===1 && i>4){
+      let wrist = await eucDist(keypoints[i], keypoints[0])
+      if(wrist<70 | wrist>290){
+        return false
+      }
     }
   }
+  return true
 }
 
 function convertTo3D([x, y, z], scale=1){
