@@ -73,11 +73,11 @@ async function makeHandPoints() {
     let spherePoint = document.createElement("a-sphere");
     spherePoint.classList.add(i + "fingerPoint");
     spherePoint.setAttribute("radius", 0.15);
-    let [x, y, z] = startingHands[i];
+    let [x, y, z] = convertTo3D(startingHands[i]);
     spherePoint.setAttribute("position", {
-      x: -x / 100,
-      y: (500 - y) / 100,
-      z: z / 50
+      x: x,
+      y: y,
+      z: z
     });
     if (5 <= i && i <= 8) {
       spherePoint.setAttribute("color", "blue");
@@ -114,7 +114,7 @@ async function renderFingers(predictions, points, lastpredictions) {
   if (predictions.length > 0) {
     const keypoints = predictions[predictions.length - 1].landmarks;
     points.forEach((point, i) => {
-      let [x, y, z] = convertPixels_to3D(predictions[predictions.length - 1].landmarks[i],lastpredictions[i])
+      let [x, y, z] = convertTo3D(predictions[predictions.length - 1].landmarks[i])
       point.setAttribute("position", {
         x: x,
         y: y,
@@ -126,9 +126,7 @@ async function renderFingers(predictions, points, lastpredictions) {
   return false;
 }
 
-function convertPixels_to3D(keypoints, lastkeypoints){
-  console.log("Keypoints", keypoints, "Last Keypoints:", lastkeypoints)
-  let [x,y,z] = 
-  return keypoints
+function convertTo3D([x, y, z]){
+  return [-x / 100, (500 - y) / 100, z / 50]
 }
 main();
