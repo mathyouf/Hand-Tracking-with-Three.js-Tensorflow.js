@@ -115,16 +115,19 @@ async function makeHandPoints() {
 async function renderFingers(predictions, points, lastpredictions, scale) {
   if (predictions.length > 0) {
     const keypoints = predictions[predictions.length - 1].landmarks;
-    // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
-    // Wanted to set scale so that difference between points due to closeness to the camera didn't matter, but it looks bad. To reimplement, uncomment above and add scale/newScale as a second parameter to convertTo3D() below
-    points.forEach((point, i) => {
-      let [x, y, z] = convertTo3D(predictions[predictions.length - 1].landmarks[i])
-      point.setAttribute("position", {
-        x: x,
-        y: y,
-        z: z
+    console.log(lastpredictions, points, eucDist(keypoints, lastpredictions) )
+    if(eucDist(keypoints, lastpredictions) < 100){
+      // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
+      // Wanted to set scale so that difference between points due to closeness to the camera didn't matter, but it looks bad. To reimplement, uncomment above and add scale/newScale as a second parameter to convertTo3D() below
+      points.forEach((point, i) => {
+        let [x, y, z] = convertTo3D(predictions[predictions.length - 1].landmarks[i])
+        point.setAttribute("position", {
+          x: x,
+          y: y,
+          z: z
+        });    
       });
-    });
+    }
     return keypoints;
   }
   return false;
@@ -135,12 +138,15 @@ function convertTo3D([x, y, z], scale=1){
 }
 
 async function eucDist(lhs, rhs) {
-   let deltaX = rhs[0] - lhs[0];
-   let deltaY = rhs[1] - lhs[1];
-   let deltaZ = rhs[2] - lhs[2];
+  let vectors = []
+  lhs.forEach((lhs_vector, i)=>{
+    vectors.push(rhs[i] - lhs_vector)
+  })
    return Math.sqrt
    (
-      deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ
+      vectors.reduce((acc,val)=>{
+        acc += val*val
+      })
    );
 }
 
