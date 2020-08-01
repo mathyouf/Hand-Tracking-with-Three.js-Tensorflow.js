@@ -125,8 +125,12 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
     if(change > 7 && change < 200){
       // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
       // Wanted to set scale so that difference between points due to closeness to the camera didn't matter, but it looks bad. To reimplement, uncomment above and add scale/newScale as a second parameter to convertTo3D() below
-      points.forEach((point, i) => {
+      points.forEach(async (point, i) => {
         let [x, y, z] = convertTo3D(predictions[predictions.length - 1].landmarks[i])
+        let [xlast, ylast, zlast] = lastpredictions[i]
+        x = await lerp(xlast,x)
+        y = await lerp(ylast,y)
+        z = await lerp(zlast,z)
         point.setAttribute("position", {
           x: x,
           y: y,
@@ -150,6 +154,10 @@ async function eucDist(lhs, rhs) {
   lhs.forEach((lhs_vector, i)=>{vectors.push((rhs[i] - lhs_vector))})
   let summedSquared = vectors.reduce((acc,val)=>{return acc + (val*val)},0)
   return Math.sqrt(summedSquared);
+}
+
+async function lerp(a, b, perc){
+  return -(a-b)*perc + a 
 }
 
 main();
