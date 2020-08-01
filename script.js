@@ -51,7 +51,7 @@ async function main() {
     const predictions = await model.estimateHands(video);
     const render = await renderFingers(predictions, points, lastpredictions);
     if (predictions.length > 0 && render) {
-      lastpredictions = predictions[predictions.length - 1].landmarks;
+      lastpredictions = render;
       count++
     }
     const wait = await new Promise((resolve, reject) => {
@@ -116,14 +116,19 @@ async function renderFingers(predictions, points, lastpredictions) {
     points.forEach((point, i) => {
       let [x, y, z] = predictions[predictions.length - 1].landmarks[i];
       let [xi, yi, zi] = lastpredictions[i];
-      let lerp = 0.2;
+      let lerp = 0.5;
+      let minDist = 1
+      let [lerpx, lerpy, lerpz] = [Math.abs(x-xi)>minDist ? (-x + lerp * (xi - x)) / 100 : xi, Math.abs(y-yi)>minDist ? (500 - (y + lerp * (yi - y))) / 100 : yi, Math.abs(z-zi)>minDist ? (z + lerp * (zi - z)) / 50 : zi ]
       point.setAttribute("position", {
-        x: (-x + lerp * (xi - x)) / 100,
-        y: (500 - (y + lerp * (yi - y))) / 100,
-        z: (z + lerp * (zi - z)) / 50
+        x: lerpx,
+        y: lerpy,
+        z: lerpz
       });
+      lastpredictions[i][0] = lerpx
+      lastpredictions[i][1] = lerpy
+      lastpredictions[i][2] = lerpz
     });
-    return true;
+    return lastpredictions;
   }
   return false;
 }
