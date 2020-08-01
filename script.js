@@ -169,12 +169,13 @@ async function makeHandPoints(){
 }
 
 function renderFingers(predictions, points){
-  if(predictions.length>0){
-    const keypoints = predictions[predictions.length-1].landmarks
-    for(let i=0; i<keypoints.length;i++){
-      let [x, y, z] = keypoints[i]
-      points[i].setAttribute('position', {x: -x/100, y:(500-y)/100, z:z/50})
-    }
+  if(predictions.length > 0){
+    points.forEach((point, i) => {
+      const keypoints = predictions[predictions.length-1].landmarks
+      let [x, y, z] = predictions[predictions.length-1].landmarks[i]
+      point.setAttribute('position', {x: x/100, y:y/100, z:z/10})
+    })
+    return true
   }
 }
 main()
