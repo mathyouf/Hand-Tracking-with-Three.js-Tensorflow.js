@@ -50,17 +50,18 @@ async function main() {
 
   let count = 0;
   let lastpredictions = startingHands.map((keypoint)=>{return convertTo3D(keypoint)});
-
+  let current = lastpredictions
   while (count < 90000) {
     if(count%100===0 && count>99){
       alert(falses)
     }
     const predictions = await model.estimateHands(video);
-    const render = await renderFingers(predictions, points, lastpredictions, scale);
+    let [render, newcurrent] = await renderFingers(predictions, points, lastpredictions, current, scale);
     if (predictions.length > 0 && render) {
       lastpredictions = render;
       count++
     }
+    current = newcurrent
     const wait = await new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve("done");
@@ -117,8 +118,10 @@ async function makeHandPoints() {
   return handPointNodes;
 }
 
-async function renderFingers(predictions, points, lastpredictions, scale) {
-    
+async function renderFingers(predictions, points, lastpredictions, current, scale) {
+  if (predictions.length<1){
+    predictions = lastpredictions
+  }
   // Check if any hand was detected
   if (predictions.length > 0) {
     
@@ -128,9 +131,10 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
     const validHand = await validateHand(keypoints)
     
     // Check if eucDist between lastpredictions and keypoints is sufficiently large
-    const change = await eucDist(keypoints[8], lastpredictions[8])
+    const change = await eucDist(keypoints[8], current[8])
     if(change > 3 && change < 400 && validHand){
-      let actual = []
+      let lastpred = []
+      let newcurrent = []
       // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
       // Wanted to set scale so that difference between points due to closeness to the camera didn't matter, but it looks bad. To reimplement, uncomment above and add scale/newScale as a second parameter to convertTo3D() below
       points.forEach((point, i) => {
@@ -145,11 +149,13 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
           y: yj,
           z: zj
         });    
-        actual.push([x,y,z])
+        lastpred.push([x,y,z])
+        newcurrent.push([xj,yj,zj])
       })
-      return actual
+      return [lastpred, newcurrent]
     }
-    
+  } else {
+    return false
   }
 }
 
