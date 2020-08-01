@@ -22,6 +22,8 @@ let startingHands = [
   [169.1226739961983, 224.44596638872133, -1.8627172708511353]
 ];
 
+let wristdistances = []
+
 async function getVideoPermissions() {
   let video = document.querySelector("video");
   if (navigator.mediaDevices.getUserMedia) {
@@ -51,6 +53,9 @@ async function main() {
   console.log(lastpredictions)
 
   while (count < 90000) {
+    if(count%100===0 && count>100){
+      alert(wristdistances)
+    }
     const predictions = await model.estimateHands(video);
     const render = await renderFingers(predictions, points, lastpredictions, scale);
     if (predictions.length > 0 && render) {
@@ -154,8 +159,9 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
 async function validateHand(keypoints){
   for(let i=0;i<keypoints.length;i++){
     if(i%4===1 && i>4){
-      let wrist = await eucDist(keypoints[i], keypoints[0])
-      if(wrist<70 | wrist>290){
+      let wrist = await eucDist(convertTo3D(keypoints[i]), convertTo3D(keypoints[0]))
+      wristdistances.push(wrist)
+      if(wrist<1.1 | wrist>1.4){
         return false
       }
     }
