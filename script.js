@@ -122,7 +122,7 @@ async function renderFingers(predictions, points, lastpredictions, scale) {
     
     // Check if eucDist between lastpredictions and keypoints is sufficiently large
     const change = await eucDist(keypoints[8], lastpredictions[8])
-    if(change > 5 && change < 300){
+    if(change > 1 && change < 800){
       let actual = []
       // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
       // Wanted to set scale so that difference between points due to closeness to the camera didn't matter, but it looks bad. To reimplement, uncomment above and add scale/newScale as a second parameter to convertTo3D() below
@@ -159,7 +159,7 @@ async function eucDist(lhs, rhs) {
   return Math.sqrt(summedSquared);
 }
 
-function lerp(a, b, perc=0.10){
+function lerp(a, b, perc=0.30){
   return -(a-b)*perc + a 
 }
 
