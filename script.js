@@ -179,7 +179,8 @@ async function renderFingers(predictions, points, lastpredictions){
     points.forEach((point, i) => {
       let [x, y, z] = predictions[predictions.length-1].landmarks[i]
       let [xi, yi, zi] = lastpredictions[i]
-      point.setAttribute('position', {x: -x/100, y:(500-y)/100, z:z/50})
+      let lerp = 0.5
+      point.setAttribute('position', {x: (-x+lerp*(xi-x))/100, y:(500-(y+lerp*(yi-y)))/100, z:(z+lerp*(zi-z))/50})
     })
     return true
   }
