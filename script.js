@@ -49,7 +49,7 @@ async function main() {
   let count = 0;
   let lastpredictions = startingHands;
 
-  while (count < 100) {
+  while (count < 10000) {
     const predictions = await model.estimateHands(video);
     const render = await renderFingers(predictions, points, lastpredictions, scale);
     if (predictions.length > 0 && render) {
@@ -115,10 +115,10 @@ async function makeHandPoints() {
 async function renderFingers(predictions, points, lastpredictions, scale) {
   if (predictions.length > 0) {
     const keypoints = predictions[predictions.length - 1].landmarks;
-    console.log("New Scale", eucDist(keypoints[0], keypoints[1]), "Old Scale", scale)
-    let scaleDiff = scale/eucDist(keypoints[0], keypoints[1])
+    // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
+    // Wanted to set scale so that difference between points due to closeness to the camera didn't matter, but it looks bad. To reimplement, uncomment above and add scale/newScale as a second parameter to convertTo3D() below
     points.forEach((point, i) => {
-      let [x, y, z] = convertTo3D(predictions[predictions.length - 1].landmarks[i], 1)
+      let [x, y, z] = convertTo3D(predictions[predictions.length - 1].landmarks[i])
       point.setAttribute("position", {
         x: x,
         y: y,
@@ -145,4 +145,3 @@ async function eucDist(lhs, rhs) {
 }
 
 main();
-
