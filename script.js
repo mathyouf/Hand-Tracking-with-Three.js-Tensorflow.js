@@ -99,16 +99,16 @@ async function renderFingers(predictions, points, lastpredictions, current, scal
 }
 
 async function main() {
-  // Make hand points
+  // Make hand points in A-frame and return Node List as points
   const points = await makeHandPoints();
-  alert('Hand Points Drawn')
+  console.log('Hand Points Drawn')
 
   // Get video permissions to begin rendering what's seen in the user camera
   const video = await getVideoPermissions();
   console.log("Video Permissions Obtained")
 
   // Load the MediaPipe handpose model.
-  const model = await handpose.load();
+  const model = await handpose.load(detectionConfidence=0.5);
   console.log("Handpose Model Loaded")
   
   // Main Loop: (1) Get new predictions → 
@@ -120,9 +120,11 @@ async function main() {
   
   let count = 0
   while (count < 2111000) {
+    // (1) Get new predictions
     const predictions = await model.estimateHands(video);
     
-    const validData = await checkIfValid(predictions)
+    
+    const handSkeleton = await checkIfValid(predictions)
     
     let [render, newcurrent] = await renderFingers(predictions, points, lastpredictions, current, scale);
     if (predictions.length > 0 && render) {
