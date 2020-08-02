@@ -1,3 +1,16 @@
+async function getVideoPermissions() {
+  let video = document.querySelector("video");
+  if (navigator.mediaDevices.getUserMedia) {
+    try {
+      let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      return video;
+    } catch (err) {
+      return err;
+    }
+  }
+}
+
 async function eucDist(lhs, rhs) {
   let vectors = []
   lhs.forEach((lhs_vector, i)=>{vectors.push((rhs[i] - lhs_vector))})
