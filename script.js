@@ -39,21 +39,17 @@ async function getVideoPermissions() {
 
 async function makeHandPoints() {
   const scene = document.querySelector("a-scene");
-  let handPointNodes = [];
-  let handCenter = document.createElement("a-entity");
+  const handCenter = document.createElement("a-entity");
+  let handPointNodes = []
   handCenter.classList.add("handCenter");
   handCenter.setAttribute("position", "3 0 0");
   // Create each hand point
   for (let i = 0; i < 21; i++) {
     let spherePoint = document.createElement("a-sphere");
+    let [x, y, z] = convertTo3D(startingHands[i]);
     spherePoint.classList.add(i + "fingerPoint");
     spherePoint.setAttribute("radius", 0.15);
-    let [x, y, z] = convertTo3D(startingHands[i]);
-    spherePoint.setAttribute("position", {
-      x: x,
-      y: y,
-      z: z
-    });
+    spherePoint.setAttribute("position", {x: x, y: y, z: z});
     if (5 <= i && i <= 8) {
       spherePoint.setAttribute("color", "blue");
     }
@@ -154,8 +150,6 @@ function lerp(a, b, perc=0.70){
 }
 
 async function main() {
-  const scale = await eucDist(convertTo3D(startingHands[0]),convertTo3D(startingHands[1]))
-  
   // Make hand points
   const points = await makeHandPoints();
 
