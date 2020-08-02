@@ -152,16 +152,21 @@ function lerp(a, b, perc=0.70){
 async function main() {
   // Make hand points
   const points = await makeHandPoints();
+  alert('Hand Points Drawn')
 
   // Get video permissions to begin rendering what's seen in the user camera
   const video = await getVideoPermissions();
+  console.log("Video Permissions Obtained")
 
   // Load the MediaPipe handpose model.
   const model = await handpose.load();
+  console.log("Handpose Model Loaded")
 
   let count = 0;
   let lastpredictions = startingHands.map((keypoint)=>{return convertTo3D(keypoint)});
   let current = lastpredictions
+  
+  // Main Loop: Get new predictions → Check if pre
   while (count < 90000) {
     if(count%100===0 && count>99){
       alert(falses)
