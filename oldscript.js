@@ -36,7 +36,6 @@ async function getVideoPermissions() {
     }
   }
 }
-
 async function main() {
   const scale = await eucDist(convertTo3D(startingHands[0]),convertTo3D(startingHands[1]))
   
