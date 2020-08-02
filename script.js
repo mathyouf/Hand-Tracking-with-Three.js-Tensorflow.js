@@ -1,12 +1,12 @@
-let falses = {}
-
 async function getVideoPermissions() {
   let video = document.querySelector("video");
   if (navigator.mediaDevices.getUserMedia) {
     try {
       let stream = await navigator.mediaDevices.getUserMedia({ video: true });
       video.srcObject = stream;
-      return video;
+      video.addEventListener('loadeddata', (event) => {
+        return video;
+      })
     } catch (err) {
       return err;
     }
@@ -57,41 +57,22 @@ async function makeHandPoints() {
   return handPointNodes;
 }
 
-async function renderFingers(predictions, points, lastpredictions, current, scale) {
-  if (predictions.length<1){
-    predictions = lastpredictions
-  }
+async function renderFingers(predictions, points, lastpredictions, current) {
+  
   // Check if any hand was detected
   if (predictions.length > 0) {
     
     const keypoints = predictions[predictions.length - 1].landmarks
-    
-    // Check that internal distances are sufficiently correct
-    const validHand = await validateHand(keypoints)
-    
+        
     // Check if eucDist between lastpredictions and keypoints is sufficiently large
     const change = await eucDist(keypoints[8], current[8])
-    if(change > 3 && change < 400 && validHand){
-      let lastpred = []
-      let newcurrent = []
-      // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
-      // Wanted to set scale so that difference between points due to closeness to the camera didn't matter, but it looks bad. To reimplement, uncomment above and add scale/newScale as a second parameter to convertTo3D() below
+    
+    if(change > 3 && change < 400){
       points.forEach((point, i) => {
         let [x, y, z] = convertTo3D(keypoints[i])
-        let [xlast, ylast, zlast] = lastpredictions[i]
-        const xj = lerp(xlast, x)
-        const yj = lerp(ylast, y)
-        const zj = lerp(zlast, z)
-        console.log(xj,yj,zj)
-        point.setAttribute("position", {
-          x: xj,
-          y: yj,
-          z: zj
-        });    
-        lastpred.push([x,y,z])
-        newcurrent.push([xj,yj,zj])
+        point.setAttribute("position", {x: x, y: y, z: z});    
       })
-      return [lastpred, newcurrent]
+      return true
     }
   } else {
     return false
@@ -124,17 +105,12 @@ async function main() {
     // (1) Get new predictions
     const predictions = await model.estimateHands(video);
         
-    let [render, newcurrent] = await renderFingers(predictions, points, lastpredictions, current, scale);
+    let render = await renderFingers(predictions, points);
+    
     if (predictions.length > 0 && render) {
-      lastpredictions = render;
       count++
     }
-    current = newcurrent
-    const wait = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve("done");
-      }, 10);
-    });
+    const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 10)});
     console.log("FPS: ",1000/new Date()-last_loop)
     last_loop = new Date()
   }
