@@ -161,13 +161,16 @@ async function main() {
   // Load the MediaPipe handpose model.
   const model = await handpose.load();
   console.log("Handpose Model Loaded")
-
-  let count = 0;
-  let lastpredictions = startingHands.map((keypoint)=>{return convertTo3D(keypoint)});
-  let current = lastpredictions
   
-  // Main Loop: (1) Get new predictions → (2) Check if predictions are valid → (3) Adjust them for smoothness/rigging → (4) Render them
-  while (count < 90000) {
+  // Main Loop: (1) Get new predictions → 
+  //            (2) Check if there are new predictions, if not, use last prediction → Proposal: (2B) Have them continue with current velocity until new prediction is given
+  //            (3) Transform values to a valid musculo-skeletal structure → 
+  //            (4) Correct for position relative to camera, larger pixel spread means it should be projected further into space → 
+  //            (5) Lerp between the current position and the new proposed position → 
+  //            (6) Render the final position
+  
+  let count = 0
+  while (count < 2111000) {
     const predictions = await model.estimateHands(video);
     
     const validData = await checkIfValid(predictions)
