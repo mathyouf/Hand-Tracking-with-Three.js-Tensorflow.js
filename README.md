@@ -7,8 +7,8 @@ You can play as the hand in Super Smash Bros, smashing things beneath you.
 
 Design
 ------------
-(1) Get Video Permissions 
-(2)
+(A) Establish Scene
+  (1) Load A-frame
 
 →
 
