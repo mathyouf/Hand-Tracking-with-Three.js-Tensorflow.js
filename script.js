@@ -119,13 +119,11 @@ async function main() {
   //            (6) Render the final position
   
   let count = 0
-  while (count < 2111000) {
+  let last_loop = new Date()
+  while (count < 2111000){
     // (1) Get new predictions
     const predictions = await model.estimateHands(video);
-    
-    
-    const handSkeleton = await checkIfValid(predictions)
-    
+        
     let [render, newcurrent] = await renderFingers(predictions, points, lastpredictions, current, scale);
     if (predictions.length > 0 && render) {
       lastpredictions = render;
@@ -137,6 +135,8 @@ async function main() {
         resolve("done");
       }, 10);
     });
+    console.log("FPS: ",1000/new Date()-last_loop)
+    last_loop = new Date()
   }
 }
 
