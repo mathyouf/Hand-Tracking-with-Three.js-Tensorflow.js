@@ -17,17 +17,19 @@
     <!-- A-frame -->
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     
-    <!-- Driver of inference and webcam permissions -->
+    <!-- Driver for entire application -->
     <script src="/script.js" defer></script>
+    
   </head>  
   <body>
     <video autoplay></video>
     <a-scene>
       <a-assets>
-        <img id="space" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2F06c479e9-5e97-46f3-9c4d-1bd75ff1afeb_dad.jpg?v=1595907647180">
+        <!--<img id="spaceHQ" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2F06c479e9-5e97-46f3-9c4d-1bd75ff1afeb_dad.jpg?v=1595907647180"> -->
+        <img id="spaceLQ" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2F3ef776cf-59f3-4190-a2ba-2eebebbeb97f_06c479e9-5e97-46f3-9c4d-1bd75ff1afeb_dad-min.jpg?v=1596339885290">
         <img id="concrete" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2FTileable-Dark-Road-Stone-Texture.jpg?v=1595907823319">
       </a-assets>
-      <a-sky rotation="0 -60 0" material="src:#space"></a-sky>
+      <a-sky rotation="0 -60 0" material="src:#spaceLQ"></a-sky>
       <a-camera position="0 1.6 3" rotation="-15 0 0"></a-camera>
       <a-entity rotation="-90 0 0" scale="1 1 0.05" geometry="radius:4; primitive:icosahedron" material="src:#concrete; repeat:10"></a-entity>
     </a-scene>

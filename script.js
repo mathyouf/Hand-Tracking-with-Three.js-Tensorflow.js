@@ -37,40 +37,6 @@ async function getVideoPermissions() {
   }
 }
 
-async function main() {
-  const scale = await eucDist(convertTo3D(startingHands[0]),convertTo3D(startingHands[1]))
-  
-  // Make hand points
-  const points = await makeHandPoints();
-
-  // Get video permissions to begin rendering what's seen in the user camera
-  const video = await getVideoPermissions();
-
-  // Load the MediaPipe handpose model.
-  const model = await handpose.load();
-
-  let count = 0;
-  let lastpredictions = startingHands.map((keypoint)=>{return convertTo3D(keypoint)});
-  let current = lastpredictions
-  while (count < 90000) {
-    if(count%100===0 && count>99){
-      alert(falses)
-    }
-    const predictions = await model.estimateHands(video);
-    let [render, newcurrent] = await renderFingers(predictions, points, lastpredictions, current, scale);
-    if (predictions.length > 0 && render) {
-      lastpredictions = render;
-      count++
-    }
-    current = newcurrent
-    const wait = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve("done");
-      }, 10);
-    });
-  }
-}
-
 async function makeHandPoints() {
   const scene = document.querySelector("a-scene");
   let handPointNodes = [];
@@ -185,6 +151,40 @@ async function eucDist(lhs, rhs) {
 
 function lerp(a, b, perc=0.70){
   return -(a-b)*perc + a 
+}
+
+async function main() {
+  const scale = await eucDist(convertTo3D(startingHands[0]),convertTo3D(startingHands[1]))
+  
+  // Make hand points
+  const points = await makeHandPoints();
+
+  // Get video permissions to begin rendering what's seen in the user camera
+  const video = await getVideoPermissions();
+
+  // Load the MediaPipe handpose model.
+  const model = await handpose.load();
+
+  let count = 0;
+  let lastpredictions = startingHands.map((keypoint)=>{return convertTo3D(keypoint)});
+  let current = lastpredictions
+  while (count < 90000) {
+    if(count%100===0 && count>99){
+      alert(falses)
+    }
+    const predictions = await model.estimateHands(video);
+    let [render, newcurrent] = await renderFingers(predictions, points, lastpredictions, current, scale);
+    if (predictions.length > 0 && render) {
+      lastpredictions = render;
+      count++
+    }
+    current = newcurrent
+    const wait = await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve("done");
+      }, 10);
+    });
+  }
 }
 
 main();
