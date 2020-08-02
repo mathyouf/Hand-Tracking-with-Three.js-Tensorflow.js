@@ -122,7 +122,7 @@ async function renderFingers(predictions, points, lastpredictions, current, scal
   }
 }
 
-async function validateHand(keypoints){
+async function checkIfValid(keypoints){
   for(let i=0;i<keypoints.length;i++){
     if(i%4===1 && i>4){
       let wrist = await eucDist(convertTo3D(keypoints[i]), convertTo3D(keypoints[0]))
@@ -166,12 +166,12 @@ async function main() {
   let lastpredictions = startingHands.map((keypoint)=>{return convertTo3D(keypoint)});
   let current = lastpredictions
   
-  // Main Loop: Get new predictions → Check if pre
+  // Main Loop: (1) Get new predictions → (2) Check if predictions are valid → (3) Adjust them for smoothness/rigging → (4) Render them
   while (count < 90000) {
-    if(count%100===0 && count>99){
-      alert(falses)
-    }
     const predictions = await model.estimateHands(video);
+    
+    const validData = await checkIfValid(predictions)
+    
     let [render, newcurrent] = await renderFingers(predictions, points, lastpredictions, current, scale);
     if (predictions.length > 0 && render) {
       lastpredictions = render;
