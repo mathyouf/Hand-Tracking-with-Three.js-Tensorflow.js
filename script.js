@@ -1,8 +1,9 @@
 async function updateTime(lasttime,elapsedseconds){
   let newtime = new Date()
-  elapsedseconds += (newtime - lasttime)
-  console.log(elapsedseconds)
-  return [newtime, elapsedseconds]
+  let deltaSeconds = (newtime-lasttime)/1000
+  let fps = 1/deltaSeconds
+  elapsedseconds += deltaSeconds
+  return [newtime, elapsedseconds, fps]
 }
 
 async function main(){
@@ -17,8 +18,10 @@ async function main(){
   
   let elapsedseconds = 0
   let lasttime = new Date()
+  let fps = 0
   while(elapsedseconds<30){
-    [lasttime, elapsedseconds] = await updateTime(lasttime,elapsedseconds)
+    [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds)
+    console.log(fps)
   }
 }
 main()
