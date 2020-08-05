@@ -50,12 +50,12 @@
     async function playHands(){
       playing = !playing
       document.querySelector('#play').innerHTML = playing ? 'Stop' : 'Play'
-      while(playing=true){
-        step = step>totalsteps-1 ? 0 : step+1
+      while(playing===true){
+        step = (step>totalsteps-3 ? 0 : step+1)
         renderFingers(recordedstream[step][1], pointNodes)
         let delay = recordedstream[step+1][0]-recordedstream[step][0]
-        let wait = await new Promise((resolve,reject)=>{setTimeout(()=>{resolve('done')},delay)})
-        console.log('Step:',step)
+        let wait = await new Promise((resolve,reject)=>{setTimeout(()=>{resolve('done')},delay*1000)})
+        console.log('Step:',step, ' Delay:',delay, ' RecordStream:', recordedstream.length)
       }
     }
   </script>
