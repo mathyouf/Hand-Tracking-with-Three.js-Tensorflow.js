@@ -107,10 +107,10 @@ function renderFingers(predictions, points, prev_xyz, lerpingOn) {
   points.forEach((point, i) => {
     let [x, y, z] = convertTo3D(predictions[i])
     if(lerpingOn){
-      let [lastx, lasty, lastz] = convertTo3D(prev_xyz[i])
-      x = lastx
-      y = lasty
-      z = lastz
+      let [lastx, lasty, lastz] = prev_xyz[i]
+      x = lerp(lastx, x)
+      y = lerp(lasty, y)
+      z = lerp(lastz, z)
     }
     point.setAttribute("position", {
       x: x,
