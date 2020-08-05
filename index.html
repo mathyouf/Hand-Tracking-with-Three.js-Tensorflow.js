@@ -20,6 +20,9 @@
   </head>  
   <body>
     <div id="timestep">
+      <button id="play" onclick="playHands()">
+        Play
+      </button>
       <button onclick="nextStep()">
         Next
       </button>
@@ -41,6 +44,9 @@
       step += 1
       console.log('Timestamp:', recordedstream[step][0])
       renderFingers(recordedstream[step][1], pointNodes)
+    }
+    function playHands(){
+      
     }
   </script>
 </html>

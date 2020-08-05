@@ -11,7 +11,7 @@ async function getVideoPermissions() {
   }
 }
 
-async function makeHandPoints(prediction) {
+function makeHandPoints(prediction) {
   const scene = document.querySelector("a-scene");
   let handPointNodes = [];
   let handCenter = document.createElement("a-entity");
