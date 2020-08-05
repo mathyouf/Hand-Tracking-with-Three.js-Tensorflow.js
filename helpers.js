@@ -11,7 +11,7 @@ async function getVideoPermissions() {
   }
 }
 
-async function makeHandPoints() {
+async function makeHandPoints(prediction) {
   const scene = document.querySelector("a-scene");
   let handPointNodes = [];
   let handCenter = document.createElement("a-entity");
@@ -22,7 +22,7 @@ async function makeHandPoints() {
     let spherePoint = document.createElement("a-sphere");
     spherePoint.classList.add(i + "fingerPoint");
     spherePoint.setAttribute("radius", 0.15);
-    let [x, y, z] = convertTo3D(startingHands[i]);
+    let [x, y, z] = convertTo3D(prediction[i]);
     spherePoint.setAttribute("position", {
       x: x,
       y: y,
@@ -97,3 +97,33 @@ let startingHands = [
   [182.18326658866843, 250.31457336377716, -2.211714267730713],
   [169.1226739961983, 224.44596638872133, -1.8627172708511353]
 ];
+
+async function renderFingers(predictions, points) {   
+    // Check if eucDist between lastpredictions and keypoints is sufficiently large
+    const change = await eucDist(keypoints[8], current[8])
+    if(change > 3 && change < 400 && validHand){
+      let lastpred = []
+      let newcurrent = []
+      // let newScale = await eucDist(convertTo3D(keypoints[0]), convertTo3D(keypoints[1]))
+      // Wanted to set scale so that difference between points due to closeness to the camera didn't matter, but it looks bad. To reimplement, uncomment above and add scale/newScale as a second parameter to convertTo3D() below
+      points.forEach((point, i) => {
+        let [x, y, z] = convertTo3D(keypoints[i])
+        let [xlast, ylast, zlast] = lastpredictions[i]
+        const xj = lerp(xlast, x)
+        const yj = lerp(ylast, y)
+        const zj = lerp(zlast, z)
+        console.log(xj,yj,zj)
+        point.setAttribute("position", {
+          x: xj,
+          y: yj,
+          z: zj
+        });    
+        lastpred.push([x,y,z])
+        newcurrent.push([xj,yj,zj])
+      })
+      return [lastpred, newcurrent]
+    }
+  } else {
+    return false
+  }
+}

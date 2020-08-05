@@ -27,9 +27,14 @@ video {
   top: 91%;
 }
 
-#controls{
+#controls {
   position: fixed;
   width: 200px;
   height: 200px;
   z-index: 9;
+}
+
+#timestep {
+  z-index: 9;
+  position: fixed;
 }

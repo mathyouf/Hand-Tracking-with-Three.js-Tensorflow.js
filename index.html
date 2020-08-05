@@ -7,19 +7,42 @@
 
     <title>3D-Web Hands Data Vis</title>
 
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    
     <!-- Driver for entire application -->
     <script src="/helpers.js"></script>
     <script src="/recordedStream.js"></script>
     
+    <!-- A-frame -->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+
   </head>  
   <body>
-    <div>
+    <div id="timestep">
+      <button onclick="nextStep()">
+        Next
+      </button>
     </div>
+    <a-scene>
+      <a-assets>
+        <img id="spaceLQ" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2F3ef776cf-59f3-4190-a2ba-2eebebbeb97f_06c479e9-5e97-46f3-9c4d-1bd75ff1afeb_dad-min.jpg?v=1596339885290">
+        <img id="concrete" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2FTileable-Dark-Road-Stone-Texture.jpg?v=1595907823319">
+      </a-assets>
+      <a-sky rotation="0 -60 0" material="src:#spaceLQ"></a-sky>
+      <a-camera position="0 1.6 3" rotation="-15 0 0"></a-camera>
+      <a-entity rotation="-90 0 0" scale="1 1 0.05" geometry="radius:4; primitive:icosahedron" material="src:#concrete; repeat:10"></a-entity>
+    </a-scene>
   </body>
   <script>
-    recordedstream.forEach((moment)=>{
-      let div = document.createElement('div')
-      console.log(moment)
-    })
+    async function main(){
+      let step = 0
+      let pointNodes = await makeHandPoints(recordedstream[0][1])
+    }
+    function nextStep(){
+      step += 1
+      console.log('Timestamp:', recordedstream[step][0])
+      
+    }
   </script>
 </html>
