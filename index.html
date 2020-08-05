@@ -35,14 +35,12 @@
     </a-scene>
   </body>
   <script>
-    async function main(){
-      let step = 0
-      let pointNodes = await makeHandPoints(recordedstream[0][1])
-    }
+    let step = 0
+    let pointNodes = makeHandPoints(recordedstream[0][1])
     function nextStep(){
       step += 1
       console.log('Timestamp:', recordedstream[step][0])
-      
+      renderFingers(recordedstream[step][1], pointNodes)
     }
   </script>
 </html>
