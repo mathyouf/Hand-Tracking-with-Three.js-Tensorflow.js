@@ -25,8 +25,11 @@ async function main(){
   let fps = 0
   while(elapsedseconds<30){
     const predictions = await model.estimateHands(video);
-    const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 10);});
+    const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 5);});
     [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds, fps_div)
+    if(predictions.length>0){
+      console.log(predictions)
+    }
   }
 }
 main()
