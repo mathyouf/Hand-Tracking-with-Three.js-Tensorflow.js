@@ -29,6 +29,8 @@
         </button>  
       </div>
       <div id="fingerpoints">
+        <input type="checkbox" id="lerping" name="lerping" value="lerping" onclick="lerpOn = !lerpOn">
+        <label for="lerping">Lerping</label><br>
         <label for="primitive">Primitive:</label>
         <select name="primitive" id="primitive" onchange="changePrimitive(this.value)">
           <option value="dodecahedron">Dodecahedron</option>
@@ -54,17 +56,18 @@
     let pointNodes = makeHandPoints(recordedstream[0][1], 'a-dodecahedron')
     let playing = false
     let prev_xyzs = []
+    let lerpOn = false
     function nextStep(){
       step += 1
       console.log('Timestamp:', recordedstream[step][0])
-      prev_xyzs = renderFingers(recordedstream[step][1], pointNodes, prev_xyzs)
+      prev_xyzs = renderFingers(recordedstream[step][1], pointNodes, prev_xyzs, lerpOn)
     }
     async function playHands(){
       playing = !playing
       document.querySelector('#play').innerHTML = playing ? 'Stop' : 'Play'
       while(playing===true){
         step = (step>totalsteps-3 ? 0 : step+1)
-        prev_xyzs = renderFingers(recordedstream[step][1], pointNodes, prev_xyzs)
+        prev_xyzs = renderFingers(recordedstream[step][1], pointNodes, prev_xyzs, lerpOn)
         let delay = recordedstream[step+1][0]-recordedstream[step][0]
         let wait = await new Promise((resolve,reject)=>{setTimeout(()=>{resolve('done')},delay*1000)})
         console.log('Step:',step, ' Delay:',delay, ' RecordStream:', recordedstream.length)
