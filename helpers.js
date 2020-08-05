@@ -101,16 +101,16 @@ let startingHands = [
   [169.1226739961983, 224.44596638872133, -1.8627172708511353]
 ];
 
-function renderFingers(predictions, points, prev_xyz, lerpingOn) {
+function renderFingers(predictions, points, prev_xyz, lerpingOn, lerpPerc) {
   let curr_xyz = []
   // Points are the nodes for our existing hand spheres, predictions are where our handpose model believes our hand is.
   points.forEach((point, i) => {
     let [x, y, z] = convertTo3D(predictions[i])
     if(lerpingOn){
       let [lastx, lasty, lastz] = prev_xyz[i]
-      x = lerp(lastx, x)
-      y = lerp(lasty, y)
-      z = lerp(lastz, z)
+      x = lerp(lastx, x, lerpPerc)
+      y = lerp(lasty, y, lerpPerc)
+      z = lerp(lastz, z, lerpPerc)
     }
     point.setAttribute("position", {
       x: x,
