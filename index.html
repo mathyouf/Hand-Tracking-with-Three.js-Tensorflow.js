@@ -31,8 +31,9 @@
       <div id="fingerpoints">
         <label for="primitive">Primitive:</label>
         <select name="primitive" id="primitive" onchange="changePrimitive(this.value)">
-          <option value="a-sphere">Sphere</option>
-          <option value="a-dodecahedron">Dodecahedron</option>
+          <option value="dodecahedron">Dodecahedron</option>
+          <option value="sphere">Sphere</option>
+          <option value="cube">Cube</option>
         </select>
       </div>
     </div>
@@ -68,9 +69,9 @@
       }
     }
     function changePrimitive(value){
-      let scene = document.querySelector('a-scene')
+      let handcenter = document.querySelector('.handCenter')
       pointNodes.forEach((node)=>{
-        scene.removeChild(node)
+        node.setAttribute('geometry', {primitive:value.toString()})
       })
     }
   </script>

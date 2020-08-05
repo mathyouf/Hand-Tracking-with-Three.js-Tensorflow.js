@@ -14,15 +14,17 @@ async function getVideoPermissions() {
 function makeHandPoints(prediction, primitive) {
   const scene = document.querySelector("a-scene");
   let handPointNodes = [];
-  let handCenter = document.createElement("a-entity");
-  handCenter.classList.add("handCenter");
-  handCenter.setAttribute("position", "3 0 0");
-  console.log(primitive)
+  let handCenter = document.querySelector('.handCenter')
+  if(handCenter === null){
+    handCenter = document.createElement("a-entity");
+    handCenter.classList.add("handCenter");
+    handCenter.setAttribute("position", "3 0 0");
+  }
   // Create each hand point
   for (let i = 0; i < 21; i++) {
     let spherePoint = document.createElement(primitive);
     spherePoint.classList.add(i + "fingerPoint");
-    spherePoint.setAttribute("radius", 0.15);
+    spherePoint.setAttribute("scale", 0.15);
     let [x, y, z] = convertTo3D(prediction[i]);
     spherePoint.setAttribute("position", {
       x: x,
