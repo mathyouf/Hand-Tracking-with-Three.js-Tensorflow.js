@@ -42,9 +42,15 @@ video {
   width: 200px;
   border-radius: 75px;
   margin: 10px;
+  border-color: black;
+  border: 10px;
+  border-style: double;
 }
 #playback{
   width: 70%;
-  margin: 55px;
+  margin: 20px 55px 0px 55px;
   position: relative;
+}
+#fingerpoints{
+  margin: 20px 55px 0px 45px;
 }

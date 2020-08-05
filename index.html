@@ -28,6 +28,13 @@
           Next
         </button>  
       </div>
+      <div id="fingerpoints">
+        <label for="primitive">Primitive:</label>
+        <select name="primitive" id="primitive" onchange="changePrimitive(this.value)">
+          <option value="a-sphere">Sphere</option>
+          <option value="a-dodecahedron">Dodecahedron</option>
+        </select>
+      </div>
     </div>
     <a-scene>
       <a-assets>
@@ -59,6 +66,12 @@
         let wait = await new Promise((resolve,reject)=>{setTimeout(()=>{resolve('done')},delay*1000)})
         console.log('Step:',step, ' Delay:',delay, ' RecordStream:', recordedstream.length)
       }
+    }
+    function changePrimitive(value){
+      let scene = document.querySelector('a-scene')
+      pointNodes.forEach((node)=>{
+        scene.removeChild(node)
+      })
     }
   </script>
 </html>
