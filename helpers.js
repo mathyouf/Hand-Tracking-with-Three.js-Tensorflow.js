@@ -24,7 +24,7 @@ function makeHandPoints(prediction, primitive) {
   for (let i = 0; i < 21; i++) {
     let spherePoint = document.createElement(primitive);
     spherePoint.classList.add(i + "fingerPoint");
-    spherePoint.setAttribute("scale", 0.15);
+    spherePoint.setAttribute("scale", {x:0.15, y:0.15, z:0.15});
     let [x, y, z] = convertTo3D(prediction[i]);
     spherePoint.setAttribute("position", {
       x: x,
@@ -44,16 +44,16 @@ function makeHandPoints(prediction, primitive) {
       spherePoint.setAttribute("color", "red");
     }
     if (i===4){
-      spherePoint.setAttribute("radius", 0.135)
+      spherePoint.setAttribute("scale", {x:0.135, y:0.135, z:0.135})
     }
     if (i%4 === 0 && i>4){
-      spherePoint.setAttribute("radius", 0.1)
+      spherePoint.setAttribute("scale", {x:0.1, y:0.1, z:0.1})
     }
     if (i%4 === 3 && i>4){
-      spherePoint.setAttribute("radius", 0.12)
+      spherePoint.setAttribute("scale", {x:0.12, y:0.12, z:0.12})
     }
     if (i%4 === 2 && i>4){
-      spherePoint.setAttribute("radius", 0.13)
+      spherePoint.setAttribute("scale", {x:0.13, y:0.13, z:0.13})
     }
     handCenter.appendChild(spherePoint);
     handPointNodes.push(spherePoint);
@@ -101,7 +101,9 @@ let startingHands = [
   [169.1226739961983, 224.44596638872133, -1.8627172708511353]
 ];
 
-async function renderFingers(predictions, points) {
+async function renderFingers(predictions, points, prev_xyz) {
+  console.log(prev_xyz)
+  let curr_xyz = []
   // Points are the nodes for our existing hand spheres, predictions are where our handpose model believes our hand is.
   points.forEach((point, i) => {
     let [x, y, z] = convertTo3D(predictions[i])
@@ -110,6 +112,7 @@ async function renderFingers(predictions, points) {
       y: y,
       z: z
     });    
+    curr_xyz.push([x,y,z])
   })
-  return
+  return curr_xyz
 }

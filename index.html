@@ -33,7 +33,8 @@
         <select name="primitive" id="primitive" onchange="changePrimitive(this.value)">
           <option value="dodecahedron">Dodecahedron</option>
           <option value="sphere">Sphere</option>
-          <option value="cube">Cube</option>
+          <option value="torusKnot">Torus-Knot</option>
+          <option value="box">Box</option>
         </select>
       </div>
     </div>
@@ -52,17 +53,18 @@
     let totalsteps = recordedstream.length
     let pointNodes = makeHandPoints(recordedstream[0][1], 'a-dodecahedron')
     let playing = false
+    let prev_xyzs = []
     function nextStep(){
       step += 1
       console.log('Timestamp:', recordedstream[step][0])
-      renderFingers(recordedstream[step][1], pointNodes)
+      prev_xyzs = renderFingers(recordedstream[step][1], pointNodes, prev_xyzs)
     }
     async function playHands(){
       playing = !playing
       document.querySelector('#play').innerHTML = playing ? 'Stop' : 'Play'
       while(playing===true){
         step = (step>totalsteps-3 ? 0 : step+1)
-        renderFingers(recordedstream[step][1], pointNodes)
+        prev_xyzs = renderFingers(recordedstream[step][1], pointNodes, prev_xyzs)
         let delay = recordedstream[step+1][0]-recordedstream[step][0]
         let wait = await new Promise((resolve,reject)=>{setTimeout(()=>{resolve('done')},delay*1000)})
         console.log('Step:',step, ' Delay:',delay, ' RecordStream:', recordedstream.length)
