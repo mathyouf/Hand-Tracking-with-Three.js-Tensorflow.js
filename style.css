@@ -34,7 +34,17 @@ video {
   z-index: 9;
 }
 
-#timestep {
+#simcontrols {
   z-index: 9;
   position: fixed;
+  background: white;
+  height: 200px;
+  width: 200px;
+  border-radius: 75px;
+  margin: 10px;
+}
+#playback{
+  width: 70%;
+  margin: 55px;
+  position: relative;
 }

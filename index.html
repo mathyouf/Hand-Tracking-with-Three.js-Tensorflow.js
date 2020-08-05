@@ -19,13 +19,15 @@
 
   </head>  
   <body>
-    <div id="timestep">
-      <button id="play" onclick="playHands()">
-        Play
-      </button>
-      <button onclick="nextStep()">
-        Next
-      </button>
+    <div id="simcontrols">
+      <div id="playback">
+        <button id="play" onclick="playHands()">
+          Play
+        </button>
+        <button onclick="nextStep()">
+          Next
+        </button>  
+      </div>
     </div>
     <a-scene>
       <a-assets>
@@ -40,7 +42,7 @@
   <script>
     let step = 0
     let totalsteps = recordedstream.length
-    let pointNodes = makeHandPoints(recordedstream[0][1])
+    let pointNodes = makeHandPoints(recordedstream[0][1], 'a-dodecahedron')
     let playing = false
     function nextStep(){
       step += 1
