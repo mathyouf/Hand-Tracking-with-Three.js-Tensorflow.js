@@ -108,5 +108,5 @@ async function renderFingers(predictions, points) {
       z: z
     });    
   })
-  return [x,y,z]
+  return
 }

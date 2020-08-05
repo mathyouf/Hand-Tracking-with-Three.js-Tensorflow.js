@@ -39,14 +39,24 @@
   </body>
   <script>
     let step = 0
+    let totalsteps = recordedstream.length
     let pointNodes = makeHandPoints(recordedstream[0][1])
+    let playing = false
     function nextStep(){
       step += 1
       console.log('Timestamp:', recordedstream[step][0])
       renderFingers(recordedstream[step][1], pointNodes)
     }
-    function playHands(){
-      
+    async function playHands(){
+      playing = !playing
+      document.querySelector('#play').innerHTML = playing ? 'Stop' : 'Play'
+      while(playing=true){
+        step = step>totalsteps-1 ? 0 : step+1
+        renderFingers(recordedstream[step][1], pointNodes)
+        let delay = recordedstream[step+1][0]-recordedstream[step][0]
+        let wait = await new Promise((resolve,reject)=>{setTimeout(()=>{resolve('done')},delay)})
+        console.log('Step:',step)
+      }
     }
   </script>
 </html>
