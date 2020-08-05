@@ -5,37 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>3D-Web Hands</title>
-    
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css">
-    
-    <!-- A-frame -->
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    
-    <!-- Tensorflow.js Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
-    
+    <title>3D-Web Hands Data Vis</title>
+
     <!-- Driver for entire application -->
     <script src="/helpers.js"></script>
-    <script src="/script.js" defer></script>
+    <script src="/recordedStream.js"></script>
     
   </head>  
   <body>
-    <div id="controls">
-      <div id="fps">fps:0</div>
-      <video autoplay></video>
+    <div>
     </div>
-    <a-scene>
-      <a-assets>
-        <!--<img id="spaceHQ" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2F06c479e9-5e97-46f3-9c4d-1bd75ff1afeb_dad.jpg?v=1595907647180"> -->
-        <img id="spaceLQ" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2F3ef776cf-59f3-4190-a2ba-2eebebbeb97f_06c479e9-5e97-46f3-9c4d-1bd75ff1afeb_dad-min.jpg?v=1596339885290">
-        <img id="concrete" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2FTileable-Dark-Road-Stone-Texture.jpg?v=1595907823319">
-      </a-assets>
-      <a-sky rotation="0 -60 0" material="src:#spaceLQ"></a-sky>
-      <a-camera position="0 1.6 3" rotation="-15 0 0"></a-camera>
-      <a-entity rotation="-90 0 0" scale="1 1 0.05" geometry="radius:4; primitive:icosahedron" material="src:#concrete; repeat:10"></a-entity>
-    </a-scene>
   </body>
+  <script>
+    recordedstream.forEach((moment)=>{
+      let div = document.createElement('div')
+      console.log(moment)
+    })
+  </script>
 </html>

@@ -29,7 +29,7 @@ async function main(){
     const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 5);});
     [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds, fps_div)
     if(predictions.length>0){
-      allpredictions.push([elapsedseconds,predictions[0].landmarks])
+      allpredictions.push([elapsedseconds.toFixed(3),predictions[0].landmarks])
     }
   }
   console.log(allpredictions)
