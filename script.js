@@ -1,9 +1,10 @@
-async function updateTime(lasttime,elapsedseconds){
+async function updateTime(lasttime,elapsedseconds, fps_div){
   let newtime = new Date()
   let deltaSeconds = (newtime-lasttime)/1000
   let fps = Math.ceil(1.0/deltaSeconds)
   fps = fps>90 ? 90 : fps
   elapsedseconds += deltaSeconds
+  fps_div.innerHTML = "fps:" + fps
   return [newtime, elapsedseconds, fps]
 }
 
@@ -24,14 +25,8 @@ async function main(){
   let fps = 0
   while(elapsedseconds<30){
     const predictions = await model.estimateHands(video);
-    // const predictions = await model.estimateHands(video);
-    const wait = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve("done");
-      }, 10);
-    });
-    [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds)
-    fps_div.innerHTML = fps
+    const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 10);});
+    [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds, fps_div)
   }
 }
 main()
