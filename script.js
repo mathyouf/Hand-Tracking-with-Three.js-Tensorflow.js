@@ -23,13 +23,15 @@ async function main(){
   let elapsedseconds = 0.0
   let lasttime = new Date()
   let fps = 0
-  while(elapsedseconds<30){
+  let allpredictions = []
+  while(elapsedseconds<10){
     const predictions = await model.estimateHands(video);
     const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 5);});
     [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds, fps_div)
     if(predictions.length>0){
-      console.log(predictions)
+      allpredictions.push([elapsedseconds,predictions[0].landmarks])
     }
   }
+  console.log(allpredictions)
 }
 main()
