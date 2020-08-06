@@ -35,6 +35,7 @@ video {
 }
 
 #simcontrols {
+  visibility: hidden;
   z-index: 9;
   position: fixed;
   background: white;
