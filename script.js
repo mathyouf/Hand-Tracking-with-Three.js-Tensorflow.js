@@ -31,14 +31,15 @@ async function main(){
   let fps = 0
   let allpredictions = []
   let recording = false
-  let prev_xyzs = []
+  let prev_xyzs = recordedstream[0][1].map((i)=>{return convertTo3D(i)})
   let lerpOn = true
-  while(elapsedseconds<10){
+  while(elapsedseconds<1000){
     const predictions = await model.estimateHands(video);
     const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 5);});
     [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds, fps_div)
+    console.log(prev_xyzs)
     if(predictions.length>0){
-      prev_xyzs = renderFingers(predictions[predictions.length - 1].landmarks, pointNodes, prev_xyzs, lerpOn)
+      prev_xyzs = await renderFingers(predictions[predictions.length - 1].landmarks, pointNodes, prev_xyzs, lerpOn)
       if(recording){
         allpredictions.push([elapsedseconds.toFixed(3),predictions[0].landmarks])      
       }
