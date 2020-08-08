@@ -33,3 +33,25 @@ video {
   height: 200px;
   z-index: 9;
 }
+
+#simcontrols {
+  visibility: hidden;
+  z-index: 9;
+  position: fixed;
+  background: white;
+  height: 200px;
+  width: 200px;
+  border-radius: 75px;
+  margin: 10px;
+  border-color: black;
+  border: 10px;
+  border-style: double;
+}
+#playback{
+  width: 70%;
+  margin: 20px 55px 0px 55px;
+  position: relative;
+}
+#fingerpoints{
+  margin: 20px 55px 0px 45px;
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>3D-Web Hands Data Vis</title>
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/playback/style.css">
+    
+    <!-- Driver for entire application -->
+    <script src="/playback/helpers.js"></script>
+    <script src="/playback/recordedStream.js"></script>
+    
+    <!-- A-frame -->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+
+  </head>  
+  <body>
+    <div id="simcontrols">
+      <div id="playback">
+        <button id="play" onclick="playHands()">
+          Play
+        </button>
+        <button onclick="nextStep()">
+          Next
+        </button>  
+      </div>
+      <div id="fingerpoints">
+        <input type="checkbox" id="lerping" name="lerping" value="lerping" onclick="lerpOn = !lerpOn">
+        <label for="lerping">Lerping</label><br>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="70" value="50" class="slider" id="lerpRange" onchange="lerpPercent=this.value/100">
+        </div>
+        <label for="primitive">Primitive:</label>
+        <select name="primitive" id="primitive" onchange="changePrimitive(this.value)">
+          <option value="dodecahedron">Dodecahedron</option>
+          <option value="sphere">Sphere</option>
+          <option value="torusKnot">Torus-Knot</option>
+          <option value="box">Box</option>
+        </select>
+      </div>
+    </div>
+    <a-scene>
+      <a-assets>
+        <img id="spaceLQ" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2F3ef776cf-59f3-4190-a2ba-2eebebbeb97f_06c479e9-5e97-46f3-9c4d-1bd75ff1afeb_dad-min.jpg?v=1596339885290">
+        <img id="concrete" preload="auto" src="https://cdn.glitch.com/3ef776cf-59f3-4190-a2ba-2eebebbeb97f%2FTileable-Dark-Road-Stone-Texture.jpg?v=1595907823319">
+      </a-assets>
+      <a-sky rotation="0 -60 0" material="src:#spaceLQ"></a-sky>
+      <a-camera position="0 1.6 3" rotation="-15 0 0"></a-camera>
+      <a-entity rotation="-90 0 0" scale="1 1 0.05" geometry="radius:4; primitive:icosahedron" material="src:#concrete; repeat:10"></a-entity>
+    </a-scene>
+  </body>
+  <script>
+    let step = 0
+    let totalsteps = recordedstream.length
+    let pointNodes = makeHandPoints(recordedstream[0][1], 'a-dodecahedron')
+    let playing = false
+    let prev_xyzs = []
+    let lerpOn = false
+    let lerpPercent = 0.5
+    document.querySelector('#simcontrols').style.visibility = "visible"
+    function nextStep(){
+      step += 1
+      console.log('Timestamp:', recordedstream[step][0])
+      prev_xyzs = renderFingers(recordedstream[step][1], pointNodes, prev_xyzs, lerpOn)
+    }
+    async function playHands(){
+      playing = !playing
+      document.querySelector('#play').innerHTML = playing ? 'Stop' : 'Play'
+      while(playing===true){
+        step = (step>totalsteps-3 ? 0 : step+1)
+        prev_xyzs = renderFingers(recordedstream[step][1], pointNodes, prev_xyzs, lerpOn, lerpPercent)
+        let delay = recordedstream[step+1][0]-recordedstream[step][0]
+        let wait = await new Promise((resolve,reject)=>{setTimeout(()=>{resolve('done')},delay*1000)})
+        console.log('Step:',step, ' Delay:',delay, ' RecordStream:', recordedstream.length)
+      }
+    }
+    function changePrimitive(value){
+      let handcenter = document.querySelector('.handCenter')
+      pointNodes.forEach((node)=>{
+        node.setAttribute('geometry', {primitive:value.toString()})
+      })
+    }
+  </script>
+</html>
