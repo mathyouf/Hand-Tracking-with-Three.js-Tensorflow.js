@@ -12,7 +12,7 @@ async function main(){
   const fps_div = document.querySelector('#fps')
   
   // Make hand points
-  const points = await makeHandPoints(recordedstream[0][1]);
+  const pointNodes = await makeHandPoints(recordedstream[0][1]);
 
   // Get video permissions to begin rendering what's seen in the user camera
   const video = await getVideoPermissions();
@@ -31,12 +31,14 @@ async function main(){
   let fps = 0
   let allpredictions = []
   let recording = false
+  let prev_xyzs = []
+  let lerpOn = true
   while(elapsedseconds<10){
     const predictions = await model.estimateHands(video);
     const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 5);});
     [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds, fps_div)
     if(predictions.length>0){
-      renderFingers()
+      prev_xyzs = renderFingers(predictions[predictions.length - 1].landmarks, pointNodes, prev_xyzs, lerpOn)
       if(recording){
         allpredictions.push([elapsedseconds.toFixed(3),predictions[0].landmarks])      
       }
