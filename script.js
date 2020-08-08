@@ -12,11 +12,17 @@ async function main(){
   const fps_div = document.querySelector('#fps')
   
   // Make hand points
-  const points = await makeHandPoints();
+  const points = await makeHandPoints(recordedstream[0][1]);
 
   // Get video permissions to begin rendering what's seen in the user camera
   const video = await getVideoPermissions();
 
+  const waitForVideo = await new Promise((resolve, reject)=>{
+    video.onloadeddata = (event) => {
+      resolve('Finished')
+    };
+  })
+  
   // Load the MediaPipe handpose model.
   const model = await handpose.load();
   
@@ -24,14 +30,17 @@ async function main(){
   let lasttime = new Date()
   let fps = 0
   let allpredictions = []
+  let recording = false
   while(elapsedseconds<10){
     const predictions = await model.estimateHands(video);
     const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 5);});
     [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds, fps_div)
     if(predictions.length>0){
-      allpredictions.push([elapsedseconds.toFixed(3),predictions[0].landmarks])
+      renderFingers()
+      if(recording){
+        allpredictions.push([elapsedseconds.toFixed(3),predictions[0].landmarks])      
+      }
     }
   }
-  console.log(allpredictions)
 }
 main()

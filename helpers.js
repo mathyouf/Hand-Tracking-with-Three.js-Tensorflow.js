@@ -11,7 +11,7 @@ async function getVideoPermissions() {
   }
 }
 
-function makeHandPoints(prediction, primitive) {
+function makeHandPoints(prediction, primitive="a-dodecahedron") {
   const scene = document.querySelector("a-scene");
   let handPointNodes = [];
   let handCenter = document.querySelector('.handCenter')
