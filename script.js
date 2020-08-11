@@ -38,7 +38,7 @@ async function main(){
     const wait = await new Promise((resolve, reject) => {setTimeout(() => {resolve("done");}, 5);});
     [lasttime, elapsedseconds, fps] = await updateTime(lasttime,elapsedseconds, fps_div)
     console.log(prev_xyzs)
-    if(predictions.length>0){
+    if(predictions.length>10){
       prev_xyzs = await renderFingers(predictions[predictions.length - 1].landmarks, pointNodes, prev_xyzs, lerpOn)
       if(recording){
         allpredictions.push([elapsedseconds.toFixed(3),predictions[0].landmarks])      
