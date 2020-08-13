@@ -101,7 +101,7 @@ let startingHands = [
   [169.1226739961983, 224.44596638872133, -1.8627172708511353]
 ];
 
-async function renderFingers(predictions, points, prev_xyz, lerpingOn, lerpPerc=0.5) {
+async function renderFingers(predictions, points, prev_xyz, lerpingOn, lerpPerc=0.4) {
   let curr_xyz = []
   // Points are the nodes for our existing hand spheres, predictions are where our handpose model believes our hand is.
   points.forEach((point, i) => {
